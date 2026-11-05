@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Та же политика безопасности контента, что и на главной странице -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'none'; base-uri 'self'; object-src 'none'">
+    <title>Политика конфиденциальности | Love&amp;Sweets</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --primary: #D9467A;
+            --primary-dark: #B83A64;
+            --dark: #2D2A26;
+            --light: #FDF8F5;
+            --gray: #6B6560;
+            --border: #E8E0DA;
+            --font: 'Montserrat', sans-serif;
+        }
+
+        body {
+            font-family: var(--font);
+            color: var(--dark);
+            background: var(--light);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: var(--primary); }
+
+        .header {
+            background: rgba(253, 248, 245, 0.95);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header__inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--dark);
+            letter-spacing: -0.02em;
+        }
+
+            .logo span { color: var(--primary); }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            background: var(--primary);
+            color: #fff;
+            transition: all 0.2s ease;
+        }
+
+            .btn:hover {
+                background: var(--primary-dark);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(217, 70, 122, 0.3);
+            }
+
+        main { padding: 50px 0 70px; }
+
+        h1 {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .date {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 36px;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            margin: 32px 0 10px;
+        }
+
+        p, li {
+            color: var(--gray);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            padding-left: 22px;
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+        }
+
+        .back { margin-top: 36px; }
+
+        .footer {
+            background: var(--dark);
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            font-size: 0.85rem;
+            padding: 28px 20px;
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 22px 18px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="index.html" class="logo">Love&amp;<span>Sweets</span></a>
+            <!-- Относительная ссылка: index.html лежит в той же папке, поэтому работает на любом компьютере -->
+            <a href="index.html#callback" class="btn">Вернуться на сайт</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="card">
+                <h1>Политика конфиденциальности</h1>
+                <p class="date">Редакция от 27.10.2026</p>
+
+                <p>Эта политика объясняет простым языком, какие ваши данные мы собираем через форму заявки на сайте, зачем они нужны и как мы их защищаем. Она составлена в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных».</p>
+
+                <h2>1. Кто обрабатывает данные</h2>
+                <p>Оператор персональных данных: семейная кондитерская «Любовь и сладости» (Love&amp;Sweets), далее — «Оператор».</p>
+                <p>Контакты по вопросам персональных данных: <a href="mailto:zakaz.loveandsweets@gmail.com">zakaz.loveandsweets@gmail.com</a>, телефон <a href="tel:+74993220020">+7 499 322-00-20</a>.</p>
+
+                <h2>2. Какие данные мы собираем</h2>
+                <p>Только те, которые вы сами указываете в форме «Оставить заявку»:</p>
+                <ul>
+                    <li>имя;</li>
+                    <li>номер телефона;</li>
+                    <li>тип события, тип и количество изделий;</li>
+                    <li>текст пожеланий, если вы его написали.</li>
+                </ul>
+                <p>Мы не собираем паспортные данные, данные банковских карт, сведения о здоровье и другие особые категории данных.</p>
+
+                <h2>3. Зачем мы собираем данные</h2>
+                <ul>
+                    <li>чтобы связаться с вами и ответить на заявку;</li>
+                    <li>чтобы подобрать десерты и рассчитать стоимость заказа;</li>
+                    <li>чтобы оформить и выполнить заказ.</li>
+                </ul>
+                <p>Мы не используем ваши данные для рекламной рассылки без отдельного согласия.</p>
+
+                <h2>4. Основание обработки</h2>
+                <p>Мы обрабатываем данные только на основании вашего согласия. Вы даёте его, самостоятельно ставя галочку в форме заявки. Без галочки форма не отправляется. Полный текст согласия: <a href="consent.html">Согласие на обработку персональных данных</a>.</p>
+
+                <h2>5. Что мы делаем с данными</h2>
+                <p>Сбор, запись, хранение, уточнение, использование и удаление данных. Мы не продаём ваши данные и не передаём третьим лицам, кроме случаев, прямо предусмотренных законом (например, по запросу государственных органов). Данные хранятся на территории Российской Федерации.</p>
+
+                <h2>6. Как долго мы храним данные</h2>
+                <p>До достижения цели обработки (выполнения заказа или ответа на заявку), но не дольше 12 месяцев с момента заявки, либо до отзыва вами согласия. После этого данные удаляются или обезличиваются.</p>
+
+                <h2>7. Ваши права</h2>
+                <p>Вы вправе:</p>
+                <ul>
+                    <li>узнать, какие ваши данные мы обрабатываем;</li>
+                    <li>потребовать уточнить, заблокировать или удалить данные;</li>
+                    <li>отозвать согласие на обработку в любой момент.</li>
+                </ul>
+                <p>Для этого напишите на <a href="mailto:zakaz.loveandsweets@gmail.com">zakaz.loveandsweets@gmail.com</a>. Мы ответим в сроки, установленные законом, а при отзыве согласия прекратим обработку и удалим данные не позднее 30 дней.</p>
+
+                <h2>8. Как мы защищаем данные</h2>
+                <ul>
+                    <li>форма проверяет и очищает введённый текст, чтобы в неё нельзя было внедрить вредоносный код;</li>
+                    <li>форма защищена от автоматических спам-отправок;</li>
+                    <li>на сайте включена политика безопасности контента, которая блокирует загрузку посторонних скриптов;</li>
+                    <li>доступ к заявкам имеют только сотрудники, которым это нужно для работы.</li>
+                </ul>
+
+                <h2>9. Сторонние сервисы</h2>
+                <p>Для отображения шрифтов страница загружает их с сервиса Google Fonts. При этом сервис может получить технические данные устройства, например IP-адрес. Мы не передаём туда данные из формы заявки.</p>
+
+                <h2>10. Изменения политики</h2>
+                <p>Мы можем обновлять эту политику. Актуальная версия всегда доступна на этой странице, дата редакции указана вверху.</p>
+
+                <div class="back">
+                    <a href="index.html#callback" class="btn">Вернуться на сайт</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">© 2023 Любовь и сладости. Все права защищены.</footer>
+</body>
+</html>
