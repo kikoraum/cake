@@ -1,9 +1,11 @@
 <?php
-// ===== Настройки сайта =====
-const DB_HOST = 'MySQL-8.4';
-const DB_NAME = 'cake_site';
-const DB_USER = 'root';
-const DB_PASS = '';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+const DB_HOST = 'sql213.infinityfree.com';
+const DB_NAME = 'if0_43377485_cake';
+const DB_USER = 'if0_43377485';
+const DB_PASS = 'e4zZ8F5YAY';
 
 function db(): PDO
 {

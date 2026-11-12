@@ -1,11 +1,11 @@
 <?php
-// Подключаем базу данных и достаем 3 последние новости для главной страницы
+// Подключаем базу данных для вывода новостей
 require __DIR__ . '/config.php';
 $news = [];
 try {
     $news = db()->query('SELECT * FROM news ORDER BY id DESC LIMIT 3')->fetchAll();
 } catch (PDOException $ex) {
-    // Если таблицы нет или ошибка - просто не выводим новости
+    // Если база недоступна, просто не выводим новости, чтобы сайт не падал
 }
 ?>
 <!DOCTYPE html>
@@ -14,15 +14,13 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://loveandsweets.ru data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; form-action 'self'; base-uri 'self'; object-src 'none'">
-
     <title>Десерт с логотипом заказать в Москве недорого с доставкой | Цены на брендированные десерты</title>
-    <meta name="description" content="Десерты с логотипом — купить в семейной кондитерской ✅ Натуральная продукция ✅ Большой выбор авторских рецептов +7 499 322 00 20">
-    <link rel="canonical" href="https://loveandsweets.ru/corporative/">
+<meta name="description" content="Заказать торт на заказ в кондитерской. Бенто торт, свадебный торт, десерты с логотипом. Натуральная продукция ✅ Доставка по Москве +7 499 322 00 20">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"></noscript>
     
     <style>
         /* ===== СБРОС СТИЛЕЙ ===== */
@@ -91,19 +89,91 @@ try {
         .burger { display: none; flex-direction: column; gap: 5px; width: 24px; height: 24px; justify-content: center; }
         .burger span { display: block; height: 2px; background: var(--dark); border-radius: 2px; transition: 0.3s; }
 
-        /* ===== ГЛАВНЫЙ ЭКРАН ===== */
-        .hero { position: relative; min-height: 85vh; display: flex; align-items: center; padding-top: 100px; background: var(--light); overflow: hidden; }
-        .hero__bg { position: absolute; inset: 0; z-index: 0; }
-        .hero__bg img { width: 100%; height: 100%; object-fit: cover; object-position: center right; filter: saturate(1.4) contrast(1.05) blur(0.3px); transform: scale(1.01); }
-        .hero__bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(253, 248, 245, 1) 0%, rgba(253, 248, 245, 0.85) 35%, rgba(253, 248, 245, 0.1) 100%); }
-        .hero__content { position: relative; z-index: 1; max-width: 700px; }
-        .hero__badge { display: inline-block; padding: 6px 16px; background: rgba(217, 70, 122, 0.1); color: var(--primary); border-radius: 50px; font-size: 0.875rem; font-weight: 600; margin-bottom: 24px; }
-        .hero__title { margin-bottom: 20px; }
-        .hero__subtitle { font-size: 1.125rem; color: var(--gray); margin-bottom: 32px; max-width: 550px; }
-        .hero__actions { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 40px; }
-        .hero__stats { display: flex; gap: 40px; flex-wrap: wrap; }
-        .stat__value { font-size: 1.75rem; font-weight: 700; color: var(--primary); }
-        .stat__label { font-size: 0.875rem; color: var(--gray); }
+/* ===== ГЛАВНЫЙ ЭКРАН ===== */
+.hero {
+    position: relative;
+    padding: 150px 0 80px; /* Отступы сверху и снизу */
+    background-color: var(--light);
+    overflow: hidden;
+}
+
+/* Сетка: текст слева, картинка справа */
+.hero__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.hero__content {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+}
+
+/* Картинка-карточка */
+.hero__image-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1); /* Красивая тень */
+}
+
+.hero__image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: none;
+}
+
+.hero__badge { display: inline-block; padding: 6px 16px; background: rgba(217, 70, 122, 0.1); color: var(--primary); border-radius: 50px; font-size: 0.875rem; font-weight: 600; margin-bottom: 24px; }
+.hero__title { margin-bottom: 20px; }
+.hero__subtitle { font-size: 1.125rem; color: var(--gray); margin-bottom: 32px; max-width: 550px; }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 40px; }
+.hero__stats { display: flex; gap: 40px; flex-wrap: wrap; }
+.stat__value { font-size: 1.75rem; font-weight: 700; color: var(--primary); }
+.stat__label { font-size: 0.875rem; color: var(--gray); }
+
+/* Адаптив для мобильных: картинка сверху, текст снизу */
+@media (max-width: 992px) {
+    .hero__inner {
+        grid-template-columns: 1fr;
+    }
+    .hero__image-wrapper {
+        min-height: 300px;
+        order: -1; /* Картинка будет сверху */
+    }
+    .hero {
+        padding: 120px 0 60px;
+    }
+}
+.hero__bg img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    object-position: right center; /* Прижимаем картинку к правому краю */
+    filter: none; /* Никакого размытия */
+}
+/* Делаем градиент, чтобы текст слева читался, а справа картинка была видна */
+.hero__bg::after { 
+    content: ''; 
+    position: absolute; 
+    inset: 0; 
+    background: linear-gradient(90deg, rgba(253, 248, 245, 1) 0%, rgba(253, 248, 245, 0.85) 30%, rgba(253, 248, 245, 0) 70%); 
+}
+.hero__content { position: relative; z-index: 1; max-width: 700px; }
+.hero__badge { display: inline-block; padding: 6px 16px; background: rgba(217, 70, 122, 0.1); color: var(--primary); border-radius: 50px; font-size: 0.875rem; font-weight: 600; margin-bottom: 24px; }
+.hero__title { margin-bottom: 20px; }
+.hero__subtitle { font-size: 1.125rem; color: var(--gray); margin-bottom: 32px; max-width: 550px; }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 40px; }
+.hero__stats { display: flex; gap: 40px; flex-wrap: wrap; }
+.stat__value { font-size: 1.75rem; font-weight: 700; color: var(--primary); }
+.stat__label { font-size: 0.875rem; color: var(--gray); }
 
         /* ===== ПРОДУКТЫ ===== */
         .products__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
@@ -223,7 +293,7 @@ try {
             <a href="index.php" class="logo">Love&<span>Sweets</span></a>
             <nav class="nav">
                 <a href="index.php" class="nav__link">Главная</a>
-                <a href="blog.php" class="nav__link">Блог</a>
+                <a href="#products" class="nav__link">Каталог</a>
                 <a href="#callback" class="nav__link">Контакты</a>
             </nav>
             <div class="header__cta">
@@ -239,21 +309,28 @@ try {
 
     <!-- ================= ГЛАВНЫЙ ЭКРАН ================= -->
     <section class="hero">
-        <div class="hero__bg">
-            <img src="fb2f54db2d9fb43ff31ba5e5bbc5daef.jpg" alt="Белые торты с золотым декором">
-        </div>
-        <div class="container hero__content">
-            <div class="hero__badge">Для корпоративных клиентов</div>
-            <h1 class="h1 hero__title">Особые сладости для важных мероприятий</h1>
-            <p class="hero__subtitle">Брендированные десерты с вашим логотипом. Специальные условия для ресторанов, кейтеринговых, PR, event и свадебных агентств.</p>
-            <div class="hero__actions">
-                <a href="#callback" class="btn btn--primary btn--large">Связаться с менеджером</a>
-                <a href="#products" class="btn btn--outline btn--large">Узнать подробнее</a>
-            </div>
-            <div class="hero__stats">
-                <div class="stat"><div class="stat__value">1000+</div><div class="stat__label">сладостей в сутки</div></div>
-                <div class="stat"><div class="stat__value">10 лет</div><div class="stat__label">на рынке</div></div>
-                <div class="stat"><div class="stat__value">100%</div><div class="stat__label">натуральные ингредиенты</div></div>
+        <div class="container">
+            <div class="hero__inner">
+                <!-- Текст слева -->
+                <div class="hero__content">
+                    <div class="hero__badge">Для корпоративных клиентов</div>
+                    <h1 class="h1 hero__title">Особые сладости для важных мероприятий</h1>
+                    <p class="hero__subtitle">Брендированные десерты с вашим логотипом. Специальные условия для ресторанов, кейтеринговых, PR, event и свадебных агентств.</p>
+                    <div class="hero__actions">
+                        <a href="#callback" class="btn btn--primary btn--large">Связаться с менеджером</a>
+                        <a href="#products" class="btn btn--outline btn--large">Узнать подробнее</a>
+                    </div>
+                    <div class="hero__stats">
+                        <div class="stat"><div class="stat__value">1000+</div><div class="stat__label">сладостей в сутки</div></div>
+                        <div class="stat"><div class="stat__value">10 лет</div><div class="stat__label">на рынке</div></div>
+                        <div class="stat"><div class="stat__value">100%</div><div class="stat__label">натуральные ингредиенты</div></div>
+                    </div>
+                </div>
+                
+                <!-- Картинка справа -->
+                <div class="hero__image-wrapper">
+<img src="Bavarian Black Forest Cake.webp" alt="Торт с малиной" fetchpriority="high" width="600" height="800">
+                </div>
             </div>
         </div>
     </section>
@@ -261,26 +338,29 @@ try {
     <!-- ================= СЕКЦИЯ ПРОДУКТОВ ================= -->
     <section id="products" class="section">
         <div class="container">
-            <h2 class="h2">Десерты с логотипом</h2>
-            <p class="lead">Специальные условия на сладости для корпоративных клиентов: ресторанов, кейтеринговых, PR, event и свадебных агентств.</p>
+<h2 class="h2">Торты на заказ и десерты с логотипом от кондитерской</h2>
+<p class="lead">Специальные условия на сладости для корпоративных клиентов. У нас можно заказать бенто торт, свадебный торт или оригинальные десерты с логотипом для вашего event-агентства или ресторана.</p>
             <div class="products__grid">
                 <article class="product-card">
-                    <div class="product-card__img"><img src="https://loveandsweets.ru/upload/iblock/dc4/m4ugd494jgio7pzro1ypu2w72gcr3k6n.jpg" alt="Прозрачные леденцы с логотипом" loading="lazy"></div>
+                    <!-- ЗАМЕНЕНО НА T1.jpg -->
+                    <div class="product-card__img"><img src="T1.webp" alt="Прозрачные леденцы с логотипом" loading="lazy"></div>
                     <div class="product-card__body"><h3 class="product-card__title">Леденцы</h3><p class="product-card__text">Вы обратили внимание на наши удивительно прозрачные леденцы? Это не сахар – мы делаем их из изомальта - низкокалорийного растительного заменителя сахара, который получают из сахарной свеклы, тростника или меда. Внутри таких леденцов могут быть натуральные цветы и травы под тематику мероприятия или съедобная фотопечать с логотипом вашей компании, а также QR-кодом, который переведет на ваш сайт.</p></div>
                 </article>
                 <article class="product-card">
+                    <!-- ОСТАВЛЕНО СТАРОЕ (ЕСЛИ НУЖНО ЗАМЕНИТЬ, ПОМЕНЯЙ ССЫЛКУ) -->
                     <div class="product-card__img"><img src="https://loveandsweets.ru/upload/iblock/780/2zkebf44k5w26uk9k0n86uqm5bb5btx6.webp" alt="Оригинальный торт с логотипом" loading="lazy"></div>
                     <div class="product-card__body"><h3 class="product-card__title">Оригинальные торты</h3><p class="product-card__text">Мы любим нестандартные задачи, а в штате кондитерской работает графический дизайнер, готовый воплотить на дизайн-макете любую вашу задумку. Уникальный торт, который мы создадим специально для вас, впечатлит гостей мероприятия - в этом нам равных нет!</p></div>
                 </article>
                 <article class="product-card">
-                    <div class="product-card__img"><img src="https://loveandsweets.ru/upload/iblock/ffc/4b2hvyyzs0yj51b7uu2kwqxvwvp53dc6.jpg" alt="Пирожные и эклеры с логотипом" loading="lazy"></div>
+                    <!-- ЗАМЕНЕНО НА T2.jpg -->
+                    <div class="product-card__img"><img src="T2.webp" alt="Пирожные и эклеры с логотипом" loading="lazy"></div>
                     <div class="product-card__body"><h3 class="product-card__title">Пирожные и эклеры с логотипом</h3><p class="product-card__text">Заварные эклеры и множество вкусов самых разных пирожных, а еще гибкость оформления делают эти угощения одними из самых популярных для корпоративных праздников и подарков.</p></div>
                 </article>
             </div>
         </div>
     </section>
 
-    <!-- ================= НОВОСТИ (Динамический блок) ================= -->
+    <!-- ================= НОВОСТИ ================= -->
     <?php if ($news): ?>
     <section class="section" style="background: var(--light);">
         <div class="container">
@@ -355,7 +435,21 @@ try {
                 <div>
                     <h2 class="h2">Наполните событие сладкими моментами</h2>
                     <p class="lead" style="margin-bottom: 32px;">Оставьте заявку — менеджер свяжется с вами, поможет с выбором и рассчитает стоимость.</p>
-                    <form id="feedback-form" novalidate>
+                    
+                    <!-- ПЛАШКА УСПЕХА -->
+                    <?php if (isset($_GET['success'])): ?>
+                        <div style="background: #E6F4EA; color: #1E6B30; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #81C784;">
+                            <strong>Спасибо!</strong> Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.
+                        </div>
+                    <?php endif; ?>
+
+                    <!-- ФОРМА: action указывает на submit.php, method POST -->
+                    <form action="submit.php" method="POST" id="feedback-form">
+                        
+                        <!-- Скрытые поля для безопасности -->
+                        <input type="hidden" name="csrf_token" value="unique_token_placeholder_12345">
+                        <input type="hidden" name="consent_version" value="1.0">
+                        
                         <div class="form__group">
                             <label for="event-type" class="form__label">Для какого события</label>
                             <select id="event-type" name="event_type" class="form__select" required>
@@ -388,24 +482,30 @@ try {
                             <input type="tel" id="phone" name="phone" class="form__input" placeholder="+7 (___) ___-__-__" maxlength="18" autocomplete="tel" inputmode="tel" required>
                             <div class="form__error" id="err-phone">Введите телефон полностью: +7 (900) 123-45-67.</div>
                         </div>
+
+                        <!-- Ловушка для ботов -->
                         <div class="hp" aria-hidden="true">
                             <label for="website">Не заполняйте это поле</label>
                             <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
                         </div>
+
+                        <!-- Галочка согласия -->
                         <div class="form__checkbox">
                             <input type="checkbox" id="consent" name="consent" required>
                             <label for="consent">Я даю <a href="consent.html" target="_blank" rel="noopener noreferrer">согласие на обработку персональных данных</a> и принимаю условия <a href="privacy.html" target="_blank" rel="noopener noreferrer">политики конфиденциальности</a></label>
                         </div>
                         <div class="form__error" id="err-consent" style="margin-top:-16px; margin-bottom:20px;">Для отправки заявки необходимо согласие на обработку персональных данных.</div>
+
                         <button type="submit" class="btn btn--primary btn--large btn--full" id="submit-btn" disabled>Отправить заявку</button>
                         <div class="form__hint" id="submit-hint">Кнопка станет активной после согласия на обработку персональных данных</div>
-                        <div class="form__success" id="form-success" role="status"></div>
+                        
                         <div class="form__contacts">
                             Либо свяжитесь с нами удобным способом: <br>
                             <a href="tel:+74993220020">+7 499 322-00-20</a> / <a href="https://api.whatsapp.com/send?phone=79686227342" target="_blank" rel="noopener noreferrer">Whats’App</a> / <a href="https://t.me/loveandsweets" target="_blank" rel="noopener noreferrer">Telegram</a>
                         </div>
                     </form>
                 </div>
+
                 <div>
                     <img src="https://loveandsweets.ru/upload/iblock/663/fcly39azql4z6ryeq8kdy55advo7toif.jpg" alt="Десерты для мероприятий" style="border-radius: 24px; width: 100%; aspect-ratio: 3/4; object-fit: cover;" loading="lazy">
                 </div>
@@ -444,15 +544,19 @@ try {
             <div class="footer__grid">
                 <div>
                     <div class="footer__brand">Love&<span>Sweets</span></div>
-                    <p class="footer__text">Мы выбрали говорить с миром одним из самых вкусных способов. Семейная кондитерская «Любовь и сладости».</p>
+<p class="footer__text">Мы выбрали говорить с миром одним из самых вкусных способов. Семейная кондитерская «Любовь и сладости». У нас можно купить торт на заказ или заказать торт с надписью.</p>
                 </div>
                 <div>
                     <div class="footer__title">Меню</div>
                     <div class="footer__links">
-                        <a href="index.php">Главная</a>
-                        <a href="blog.php">Блог</a>
-                        <a href="#callback">Контакты</a>
-                        <a href="admin.php">Админ-панель</a>
+                        <a href="/pirozhnye/">Каталог daily</a>
+                        <a href="/tort-na-zakaz/na-den-rozhdeniya/">Каталог lab</a>
+                        <a href="/art/">Направление art</a>
+                        <a href="/news/">Журнал</a>
+                        <a href="/about/">История бренда</a>
+                        <a href="/payment/">Доставка и оплата</a>
+                        <a href="/corporative/">Корпоративным клиентам</a>
+                        <a href="/contacts/">Контакты</a>
                     </div>
                 </div>
                 <div>
@@ -478,11 +582,12 @@ try {
     </footer>
 
     <!-- ================= СКРИПТЫ ================= -->
-     <script>
+    <script>
         document.querySelector('.burger')?.addEventListener('click', function () {
             alert('Для полноценной работы мобильного меню требуется выезжающая панель.');
         });
 
+        // Валидация формы перед отправкой
         (function () {
             const form = document.getElementById('feedback-form');
             if (!form) return;
@@ -491,15 +596,17 @@ try {
             const hint = document.getElementById('submit-hint');
             const consent = document.getElementById('consent');
             const phone = document.getElementById('phone');
-            const success = document.getElementById('form-success');
 
+            // Очистка текста
             const clean = (text) => text.trim().replace(/[<>]/g, '');
 
+            // Показать / скрыть ошибку
             function setError(fieldId, errId, hasError) {
                 document.getElementById(fieldId).classList.toggle('invalid', hasError);
                 document.getElementById(errId).classList.toggle('show', hasError);
             }
 
+            // Галочка согласия
             function updateButton() {
                 btn.disabled = !consent.checked;
                 hint.style.display = consent.checked ? 'none' : 'block';
@@ -511,6 +618,7 @@ try {
             });
             updateButton();
 
+            // Маска телефона
             phone.addEventListener('input', function () {
                 let d = phone.value.replace(/\D/g, '');
                 if (d[0] === '7' || d[0] === '8') d = d.slice(1);
@@ -523,77 +631,51 @@ try {
                 phone.value = out;
             });
 
-            function validate() {
-                let ok = true;
-                const event = document.getElementById('event-type');
-                const eventBad = !event.value;
-                setError('event-type', 'err-event', eventBad);
-
-                const products = document.getElementById('products-desc');
-                const productsBad = clean(products.value).length < 3;
-                setError('products-desc', 'err-products', productsBad);
-
-                const wishes = document.getElementById('wishes');
-                const wishesBad = wishes.value.length > 1000;
-                setError('wishes', 'err-wishes', wishesBad);
-
-                const name = document.getElementById('name');
-                const nameBad = !/^[A-Za-zА-Яа-яЁё\s'\-]{2,60}$/.test(clean(name.value));
-                setError('name', 'err-name', nameBad);
-
-                const phoneBad = phone.value.replace(/\D/g, '').length !== 11;
-                setError('phone', 'err-phone', phoneBad);
-
-                return !(eventBad || productsBad || wishesBad || nameBad || phoneBad);
-            }
-
+            // Проверка перед отправкой (мы не блокируем отправку, а только показываем ошибки)
             form.addEventListener('submit', function (e) {
-                e.preventDefault();
+                let hasErrors = false;
+
                 if (!consent.checked) {
                     document.getElementById('err-consent').classList.add('show');
-                    return;
+                    hasErrors = true;
                 }
-                if (document.getElementById('website').value !== '') return;
-                if (!validate()) return;
 
-                const data = {
-                    event_type: document.getElementById('event-type').value,
-                    products_desc: clean(document.getElementById('products-desc').value),
-                    wishes: clean(document.getElementById('wishes').value),
-                    name: clean(document.getElementById('name').value),
-                    phone: phone.value
-                };
+                const event = document.getElementById('event-type');
+                if (!event.value) {
+                    setError('event-type', 'err-event', true);
+                    hasErrors = true;
+                } else {
+                    setError('event-type', 'err-event', false);
+                }
 
-                success.textContent = 'Отправка...';
-                success.classList.add('show');
-                success.style.color = '#1E6B30';
+                const products = document.getElementById('products-desc');
+                if (clean(products.value).length < 3) {
+                    setError('products-desc', 'err-products', true);
+                    hasErrors = true;
+                } else {
+                    setError('products-desc', 'err-products', false);
+                }
 
-                fetch('submit.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: new URLSearchParams({
-                        ...data,
-                        consent: '1',
-                        website: ''
-                    })
-                })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.ok) {
-                        success.textContent = 'Спасибо, ' + data.name + '! Заявка принята, менеджер свяжется с вами.';
-                        form.reset();
-                        updateButton();
-                    } else {
-                        success.textContent = 'Ошибка: ' + result.error;
-                        success.style.color = '#D93025';
-                    }
-                })
-                .catch(error => {
-                    success.textContent = 'Ошибка сети. Проверьте подключение и попробуйте позже.';
-                    success.style.color = '#D93025';
-                });
+                const name = document.getElementById('name');
+                const nameBad = !/^[\p{L}\s'\-]{2,60}$/u.test(clean(name.value));
+                if (nameBad) {
+                    setError('name', 'err-name', true);
+                    hasErrors = true;
+                } else {
+                    setError('name', 'err-name', false);
+                }
+
+                const phoneBad = phone.value.replace(/\D/g, '').length !== 11;
+                if (phoneBad) {
+                    setError('phone', 'err-phone', true);
+                    hasErrors = true;
+                } else {
+                    setError('phone', 'err-phone', false);
+                }
+
+                if (hasErrors) {
+                    e.preventDefault(); // Останавливаем отправку, если есть ошибки
+                }
             });
         })();
     </script>
